@@ -1,11 +1,12 @@
 # HTTP Server.
 server:
-  address:             ":8199"
+  address:             ":8090"
   dumpRouterMap:       true
   routeOverWrite:      true
   accessLogEnabled:    true
   openapiPath:         "/api.json"
   swaggerPath:         "/swagger"
+  secretKey:            "qo&l_l&&2ycxa5+yvvuezn1nskyxgi0dgjmpwly#)poc$x)17i"
 
 # Global logging.
 logger:

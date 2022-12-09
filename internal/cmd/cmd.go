@@ -1,13 +1,13 @@
 package cmd
 
 import (
+	"blog-api/internal/controller/admin"
+	"blog-api/internal/service"
 	"context"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
-
-	"blog-api/internal/controller"
 )
 
 var (
@@ -17,11 +17,18 @@ var (
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
-			s.Group("/", func(group *ghttp.RouterGroup) {
-				group.Middleware(ghttp.MiddlewareHandlerResponse)
-				group.Bind(
-					controller.Hello,
-				)
+			//全局中间件注册
+			s.Use(service.Middleware().CustomResponseHandler, ghttp.MiddlewareCORS)
+			// 后台路由
+			s.Group("/admin", func(group *ghttp.RouterGroup) {
+				// 不需要 JWT Token 校验的路由
+				group.GET("/login", admin.User.Login)
+
+				// 需要  JWT Token 的路由
+				group.Group("", func(group *ghttp.RouterGroup) {
+					group.Middleware(service.Middleware().Jwt)
+					group.Bind()
+				})
 			})
 			s.Run()
 			return nil
