@@ -34,7 +34,7 @@ func (s *sUser) hmacSha256(data string, secret string) string {
 // GenerateJwtToken 生成 jwt token
 func (s *sUser) GenerateJwtToken(ctx context.Context) string {
 	tokenString, _ := middleware.Auth().LoginHandler(ctx)
-	return tokenString
+	return "Bearer " + tokenString
 }
 
 // CheckUserAccount 检查用户账号密码是否正确
