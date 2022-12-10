@@ -27,7 +27,8 @@ var (
 				// 需要  JWT Token 的路由
 				group.Group("", func(group *ghttp.RouterGroup) {
 					group.Middleware(service.Middleware().Jwt)
-					group.Bind(admin.Dashboard)
+					group.Bind(admin.Dashboard.Index)
+					group.Bind(admin.Category.CategoryAndTag)
 				})
 			})
 			s.Run()
