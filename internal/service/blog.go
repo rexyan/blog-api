@@ -19,6 +19,7 @@ type (
 		BlogAssociationTag(ctx context.Context, BlogId int, TagId int) (res int, err error)
 		GetBlogs(ctx context.Context, title string, page model.PageInput) (res *model.BlogListOutput, err error)
 		GetBlogDetail(ctx context.Context, BlogId int) (res *model.BlogDetailOutput, err error)
+		UpdateBlog(ctx context.Context, in model.UpdateBlogInput) (err error)
 	}
 )
 

@@ -3,6 +3,7 @@ package blog
 import (
 	"blog-api/internal/dao"
 	"blog-api/internal/model"
+	"blog-api/internal/model/entity"
 	"blog-api/internal/service"
 	"context"
 	"github.com/gogf/gf/v2/database/gdb"
@@ -194,10 +195,55 @@ func (s *sBlog) GetBlogDetail(ctx context.Context, BlogId int) (res *model.BlogD
 		return nil, err
 	}
 
-	err = dao.Tag.Ctx(ctx).Where(dao.Tag.Columns().Id, gdb.ListItemValuesUnique(tagList, "TagId")).Scan(&res.Tags)
-	if err != nil {
-		return nil, err
+	if tagList != nil {
+		err = dao.Tag.Ctx(ctx).Where(dao.Tag.Columns().Id, gdb.ListItemValuesUnique(tagList, "TagId")).Scan(&res.Tags)
+		if err != nil {
+			return nil, err
+		}
 	}
+	err = gconv.Scan([]entity.Tag{}, &res.Tags)
+	return
+}
 
+func (s *sBlog) UpdateBlog(ctx context.Context, in model.UpdateBlogInput) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		blogCls := dao.Blog.Columns()
+		blogLastInsertId, err := tx.Ctx(ctx).Update(dao.Blog.Table(), g.Map{
+			blogCls.IsAppreciation:   in.IsAppreciation,
+			blogCls.CategoryId:       in.CategoryId,
+			blogCls.IsCommentEnabled: in.IsCommentEnabled,
+			blogCls.Content:          in.Content,
+			blogCls.Description:      in.Description,
+			blogCls.FirstPicture:     in.FirstPicture,
+			blogCls.Password:         in.Password,
+			blogCls.IsPublished:      in.IsPublished,
+			blogCls.ReadTime:         in.ReadTime,
+			blogCls.IsRecommend:      in.IsRecommend,
+			blogCls.Title:            in.Title,
+			blogCls.IsTop:            in.IsTop,
+			blogCls.Views:            in.Views,
+			blogCls.Words:            in.Words,
+			blogCls.UserId:           in.UserId,
+			blogCls.UpdateTime:       gtime.Datetime(),
+		}, blogCls.Id, in.Id)
+		if err != nil {
+			return err
+		}
+
+		// 删除文章关联标签
+		_, err = dao.BlogTag.Ctx(ctx).Where(dao.BlogTag.Columns().BlogId, in.Id).Delete()
+		if err != nil {
+			return err
+		}
+
+		// 文章关联标签
+		for _, tagId := range in.TagList {
+			_, err := s.BlogAssociationTag(ctx, gconv.Int(blogLastInsertId), tagId)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	return
 }

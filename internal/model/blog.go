@@ -78,3 +78,8 @@ type BlogDetailOutput struct {
 	BlogListOutPutItems
 	Tags []entity.Tag `json:"tags"`
 }
+
+type UpdateBlogInput struct {
+	Id int // 文章Id
+	CreateBlogInput
+}

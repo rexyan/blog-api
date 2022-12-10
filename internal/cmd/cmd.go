@@ -29,6 +29,7 @@ var (
 					group.Middleware(service.Middleware().Jwt)
 					group.Bind(admin.Dashboard.Index)
 					group.Bind(admin.Blog.CreateBlog)
+					group.Bind(admin.Blog.UpdateBlog)
 					group.Bind(admin.Blog.GetBlogList)
 					group.Bind(admin.Blog.GetBlogDetail)
 					group.Bind(admin.Category.CategoryAndTag)

@@ -87,9 +87,18 @@ type GetBlogListRes struct {
 type BlogDetailReq struct {
 	g.Meta        `path:"/blog" tags:"Blog" method:"get" summary:"文章详情"`
 	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
-	Id            int    `json:"id" dc:"文章ID" in:"query"  v:"required#请输入文章ID"`
+	Id            int    `json:"id" dc:"文章ID" in:"query"`
 }
 type BlogDetailRes struct {
 	Tags []Tags `json:"tags"`
 	Blog
 }
+
+type UpdateBlogReq struct {
+	g.Meta        `path:"/blog" tags:"Blog" method:"put" summary:"修改文章"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"文章ID"`
+	CreateBlogReq
+}
+
+type UpdateBlogRes struct{}

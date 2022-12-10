@@ -68,3 +68,29 @@ func (c *cBlog) GetBlogDetail(ctx context.Context, req *admin.BlogDetailReq) (re
 	err = gconv.Scan(blog, &res)
 	return
 }
+
+func (c *cBlog) UpdateBlog(ctx context.Context, req *admin.UpdateBlogReq) (res *admin.UpdateBlogRes, err error) {
+	userId := gconv.String(middleware.Auth().GetIdentity(ctx))
+	err = service.Blog().UpdateBlog(ctx, model.UpdateBlogInput{
+		Id: req.Id,
+		CreateBlogInput: model.CreateBlogInput{
+			Title:            req.Title,
+			FirstPicture:     req.FirstPicture,
+			Content:          req.Content,
+			Description:      req.Description,
+			IsPublished:      req.Published,
+			IsRecommend:      req.Recommend,
+			IsAppreciation:   req.Appreciation,
+			IsCommentEnabled: req.CommentEnabled,
+			Views:            req.Views,
+			Words:            req.Words,
+			ReadTime:         req.ReadTime,
+			CategoryId:       req.Cate,
+			IsTop:            req.Top,
+			Password:         req.Password,
+			UserId:           userId,
+			TagList:          req.TagList,
+		},
+	})
+	return
+}
