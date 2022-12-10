@@ -19,9 +19,9 @@ func (c *cCategory) CategoryAndTag(ctx context.Context, req *admin.CategoryAndTa
 	}
 	for _, category := range categoryList {
 		res.Categories = append(res.Categories, admin.Categories{
-			ID:    gconv.Int(category.Id),
-			Name:  category.CategoryName,
-			Blogs: []interface{}{},
+			ID:           gconv.Int(category.Id),
+			CategoryName: category.CategoryName,
+			Blogs:        []interface{}{},
 		})
 	}
 	tagList, err := service.Tag().GetTagList(ctx)

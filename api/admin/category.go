@@ -8,9 +8,9 @@ type CategoryAndTagReq struct {
 }
 
 type Categories struct {
-	ID    int           `json:"id"`
-	Name  string        `json:"name"`
-	Blogs []interface{} `json:"blogs"`
+	ID           int           `json:"id"`
+	CategoryName string        `json:"name"`
+	Blogs        []interface{} `json:"blogs"`
 }
 type Tags struct {
 	ID    int           `json:"id"`

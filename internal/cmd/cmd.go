@@ -28,6 +28,8 @@ var (
 				group.Group("", func(group *ghttp.RouterGroup) {
 					group.Middleware(service.Middleware().Jwt)
 					group.Bind(admin.Dashboard.Index)
+					group.Bind(admin.Blog.CreateBlog)
+					group.Bind(admin.Blog.GetBlogList)
 					group.Bind(admin.Category.CategoryAndTag)
 				})
 			})
