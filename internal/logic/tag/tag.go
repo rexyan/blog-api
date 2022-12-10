@@ -25,6 +25,12 @@ func (s *sTag) GetTagList(ctx context.Context) (tags []*entity.Tag, err error) {
 	return
 }
 
+// GetTagIdsByBlogId 获取文章关联的 Tag ID 列表
+func (s *sTag) GetTagIdsByBlogId(ctx context.Context, BlogId int) (tags []*entity.BlogTag, err error) {
+	err = dao.BlogTag.Ctx(ctx).Where(dao.BlogTag.Columns().BlogId, BlogId).Scan(&tags)
+	return
+}
+
 // DashboardTagStatistics 看板 Tag 分析数据
 func (s *sTag) DashboardTagStatistics(ctx context.Context) (res *model.DashboardTagOutput, err error) {
 	res = &model.DashboardTagOutput{}

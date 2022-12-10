@@ -1,5 +1,7 @@
 package model
 
+import "blog-api/internal/model/entity"
+
 type PageInput struct {
 	PageNum  int `json:"pageNum"`
 	PageSize int `json:"pageSize"`
@@ -24,7 +26,7 @@ type CreateBlogInput struct {
 	TagList          []int  // 标签列表
 }
 
-type BlogsOutPutItems struct {
+type BlogListOutPutItems struct {
 	ID             int         `json:"id"`
 	Title          string      `json:"title"`
 	FirstPicture   string      `json:"firstPicture"`
@@ -51,23 +53,28 @@ type BlogsOutPutItems struct {
 	Tags []interface{} `json:"tags"`
 }
 
-type BlogsOutput struct {
-	Total             int                `json:"total"`
-	List              []BlogsOutPutItems `json:"list"`
-	PageNum           int                `json:"pageNum"`
-	PageSize          int                `json:"pageSize"`
-	Size              int                `json:"size"`
-	StartRow          int                `json:"startRow"`
-	EndRow            int                `json:"endRow"`
-	Pages             int                `json:"pages"`
-	PrePage           int                `json:"prePage"`
-	NextPage          int                `json:"nextPage"`
-	IsFirstPage       bool               `json:"isFirstPage"`
-	IsLastPage        bool               `json:"isLastPage"`
-	HasPreviousPage   bool               `json:"hasPreviousPage"`
-	HasNextPage       bool               `json:"hasNextPage"`
-	NavigatePages     int                `json:"navigatePages"`
-	NavigatepageNums  []int              `json:"navigatepageNums"`
-	NavigateFirstPage int                `json:"navigateFirstPage"`
-	NavigateLastPage  int                `json:"navigateLastPage"`
+type BlogListOutput struct {
+	Total             int                   `json:"total"`
+	List              []BlogListOutPutItems `json:"list"`
+	PageNum           int                   `json:"pageNum"`
+	PageSize          int                   `json:"pageSize"`
+	Size              int                   `json:"size"`
+	StartRow          int                   `json:"startRow"`
+	EndRow            int                   `json:"endRow"`
+	Pages             int                   `json:"pages"`
+	PrePage           int                   `json:"prePage"`
+	NextPage          int                   `json:"nextPage"`
+	IsFirstPage       bool                  `json:"isFirstPage"`
+	IsLastPage        bool                  `json:"isLastPage"`
+	HasPreviousPage   bool                  `json:"hasPreviousPage"`
+	HasNextPage       bool                  `json:"hasNextPage"`
+	NavigatePages     int                   `json:"navigatePages"`
+	NavigatepageNums  []int                 `json:"navigatepageNums"`
+	NavigateFirstPage int                   `json:"navigateFirstPage"`
+	NavigateLastPage  int                   `json:"navigateLastPage"`
+}
+
+type BlogDetailOutput struct {
+	BlogListOutPutItems
+	Tags []entity.Tag `json:"tags"`
 }

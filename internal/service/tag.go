@@ -14,6 +14,7 @@ import (
 type (
 	ITag interface {
 		GetTagList(ctx context.Context) (tags []*entity.Tag, err error)
+		GetTagIdsByBlogId(ctx context.Context, BlogId int) (tags []*entity.BlogTag, err error)
 		DashboardTagStatistics(ctx context.Context) (res *model.DashboardTagOutput, err error)
 	}
 )

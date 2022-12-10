@@ -98,9 +98,9 @@ func (s *sBlog) BlogAssociationTag(ctx context.Context, BlogId int, TagId int) (
 	return gconv.Int(lastInsertId), nil
 }
 
-func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput) (res *model.BlogsOutput, err error) {
+func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput) (res *model.BlogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
-	res = &model.BlogsOutput{}
+	res = &model.BlogListOutput{}
 	query := dao.Blog.Ctx(ctx)
 
 	// 是否根据 title 过滤
@@ -109,7 +109,7 @@ func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput
 	}
 	result, err := query.Page(page.PageNum, page.PageSize).All()
 	if err != nil {
-		return &model.BlogsOutput{}, err
+		return &model.BlogListOutput{}, err
 	}
 
 	// 总数
@@ -165,5 +165,39 @@ func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput
 	for i := 1; i <= pageInfo.TotalPage; i++ {
 		res.NavigatepageNums = append(res.NavigatepageNums, i)
 	}
+	return
+}
+
+func (s *sBlog) GetBlogDetail(ctx context.Context, BlogId int) (res *model.BlogDetailOutput, err error) {
+	res = &model.BlogDetailOutput{}
+
+	err = dao.Blog.Ctx(ctx).Where(dao.Blog.Columns().Id, BlogId).Scan(&res)
+	if err != nil {
+		return nil, err
+	}
+
+	// 此种写法存在问题（猜测可能是 BlogDetailOutput 中存在 Struct 继承关系）
+	//err = dao.Category.Ctx(ctx).
+	//	Where(dao.Category.Columns().Id, res.CategoryId).
+	//	ScanList(&res, "Category")
+	//if err != nil {
+	//	return nil, err
+	//}
+
+	err = dao.Category.Ctx(ctx).Where(dao.Category.Columns().Id, res.CategoryId).Scan(&res.Category)
+	if err != nil {
+		return nil, err
+	}
+
+	tagList, err := service.Tag().GetTagIdsByBlogId(ctx, BlogId)
+	if err != nil {
+		return nil, err
+	}
+
+	err = dao.Tag.Ctx(ctx).Where(dao.Tag.Columns().Id, gdb.ListItemValuesUnique(tagList, "TagId")).Scan(&res.Tags)
+	if err != nil {
+		return nil, err
+	}
+
 	return
 }

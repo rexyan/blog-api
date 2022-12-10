@@ -59,3 +59,12 @@ func (c *cBlog) GetBlogList(ctx context.Context, req *admin.GetBlogListReq) (res
 	}
 	return
 }
+
+func (c *cBlog) GetBlogDetail(ctx context.Context, req *admin.BlogDetailReq) (res *admin.BlogDetailRes, err error) {
+	blog, err := service.Blog().GetBlogDetail(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = gconv.Scan(blog, &res)
+	return
+}

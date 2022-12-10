@@ -27,13 +27,12 @@ type CreateBlogReq struct {
 	Password       string `json:"password" dc:"私密密码"`
 }
 
-type CreateBlogRes struct {
-}
+type CreateBlogRes struct{}
 
 type GetBlogListReq struct {
 	g.Meta        `path:"/blogs" tags:"Blog" method:"get" summary:"文章列表"`
 	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
-	Title         string `json:"title" dc:"文章标题" d:""`
+	Title         string `json:"title" in:"query" dc:"文章标题" d:""`
 	Page
 }
 
@@ -83,4 +82,14 @@ type Blogs struct {
 type GetBlogListRes struct {
 	Blogs      Blogs        `json:"blogs"`
 	Categories []Categories `json:"categories"`
+}
+
+type BlogDetailReq struct {
+	g.Meta        `path:"/blog" tags:"Blog" method:"get" summary:"文章详情"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"文章ID" in:"query"  v:"required#请输入文章ID"`
+}
+type BlogDetailRes struct {
+	Tags []Tags `json:"tags"`
+	Blog
 }
