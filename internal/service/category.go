@@ -6,6 +6,7 @@
 package service
 
 import (
+	"blog-api/internal/model"
 	"blog-api/internal/model/entity"
 	"context"
 )
@@ -13,6 +14,7 @@ import (
 type (
 	ICategory interface {
 		GetCategoryList(ctx context.Context) (res []*entity.Category, err error)
+		DashboardCategoryStatistics(ctx context.Context) (res *model.DashboardCategoryOutput, err error)
 	}
 )
 

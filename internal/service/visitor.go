@@ -13,6 +13,7 @@ import (
 type (
 	IVisitor interface {
 		GetTodayPvUv(ctx context.Context) (res *model.TodayPvUvOutput, err error)
+		DashBoardMonthPvUvStatistics(ctx context.Context) (res *model.DashBoardMonthPvUv, err error)
 		GetLatestMonthPvUv(ctx context.Context) (res []*model.LatestMonthPvUvOutput, err error)
 		GetCityVisitor(ctx context.Context) (res []*model.CityVisitorOutput, err error)
 	}

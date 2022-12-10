@@ -6,8 +6,15 @@ type TodayPvUvOutput struct {
 }
 
 type LatestMonthPvUvOutput struct {
-	Pv []int
-	Uv []int
+	Date string
+	Pv   int
+	Uv   int
+}
+
+type DashBoardMonthPvUv struct {
+	Date []string
+	Pv   []int
+	Uv   []int
 }
 
 type CityVisitorOutput struct {

@@ -16,7 +16,11 @@ func New() *sComment {
 	return &sComment{}
 }
 
-func (s *sComment) GetCommentCount(ctx context.Context) (count int64, err error) {
-	count, err = dao.Comment.Ctx(ctx).Count()
+// GetCommentCount 评论计数
+func (s *sComment) GetCommentCount(ctx context.Context) (count int64) {
+	count, err := dao.Comment.Ctx(ctx).Count()
+	if err != nil {
+		return
+	}
 	return
 }

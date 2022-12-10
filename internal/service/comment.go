@@ -11,7 +11,7 @@ import (
 
 type (
 	IComment interface {
-		GetCommentCount(ctx context.Context) (count int64, err error)
+		GetCommentCount(ctx context.Context) (count int64)
 	}
 )
 

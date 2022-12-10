@@ -6,6 +6,7 @@
 package service
 
 import (
+	"blog-api/internal/model"
 	"blog-api/internal/model/entity"
 	"context"
 )
@@ -13,6 +14,7 @@ import (
 type (
 	ITag interface {
 		GetTagList(ctx context.Context) (tags []*entity.Tag, err error)
+		DashboardTagStatistics(ctx context.Context) (res *model.DashboardTagOutput, err error)
 	}
 )
 

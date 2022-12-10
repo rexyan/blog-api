@@ -12,6 +12,8 @@ import (
 type (
 	IBlog interface {
 		GetBlogCount(ctx context.Context) (count int64)
+		GetBlogCountByTagId(ctx context.Context, TagId int64) (count int64)
+		GetBlogCountByCategoryId(ctx context.Context, CategoryID int64) (count int64)
 	}
 )
 
