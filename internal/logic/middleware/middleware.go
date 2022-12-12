@@ -36,7 +36,7 @@ func init() {
 		// 	token过期后，可凭借旧token获取新token的刷新时间
 		MaxRefresh: time.Minute * 5,
 		// 身份验证的key值
-		IdentityKey: "id",
+		IdentityKey: "user_id",
 		//token检索模式，用于提取token-> Authorization
 		// TokenLookup: "header: Authorization, query: token, cookie: jwt",
 		TokenLookup: "header: Authorization",
@@ -101,7 +101,9 @@ func Authenticator(ctx context.Context) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	data := gconv.Map(user)
+	data["user_id"] = data["id"]
+	return &data, nil
 }
 
 type CustomHandlerResponse struct {
