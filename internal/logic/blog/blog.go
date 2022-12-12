@@ -106,7 +106,7 @@ func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput
 
 	// 是否根据 title 过滤
 	if len(title) > 0 {
-		query = query.WhereLike(dao.Blog.Columns().Title, title)
+		query = query.WhereLike(dao.Blog.Columns().Title, "%"+title+"%")
 	}
 	result, err := query.Page(page.PageNum, page.PageSize).All()
 	if err != nil {
@@ -141,26 +141,30 @@ func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput
 	res.EndRow = page.PageSize * page.PageNum
 	res.Pages = pageInfo.TotalPage
 	res.PrePage = pageInfo.CurrentPage - 1
-	res.NextPage = pageInfo.CurrentPage + 1
+
 	// 是否是第一个页
 	if pageInfo.CurrentPage == 0 {
 		res.IsFirstPage = true
 		res.HasPreviousPage = false
 		res.NavigateFirstPage = 1
+		res.PrePage = 0
 	} else {
 		res.IsFirstPage = false
 		res.HasPreviousPage = true
 		res.NavigateFirstPage = pageInfo.CurrentPage - 1
+		res.PrePage = pageInfo.CurrentPage - 1
 	}
 	// 是否是最后一页
 	if pageInfo.CurrentPage != pageInfo.TotalPage {
 		res.IsLastPage = false
 		res.HasNextPage = true
 		res.NavigateLastPage = pageInfo.CurrentPage + 1
+		res.NextPage = pageInfo.CurrentPage + 1
 	} else {
 		res.IsLastPage = true
 		res.HasNextPage = false
 		res.NavigateLastPage = pageInfo.TotalPage
+		res.NextPage = 0
 	}
 	res.NavigatePages = 8
 	for i := 1; i <= pageInfo.TotalPage; i++ {
@@ -244,6 +248,44 @@ func (s *sBlog) UpdateBlog(ctx context.Context, in model.UpdateBlogInput) (err e
 			}
 		}
 		return nil
+	})
+	return
+}
+
+func (s *sBlog) UpdateBlogTop(ctx context.Context, in *model.UpdateBlogTopInput) (err error) {
+	_, err = dao.Blog.Ctx(ctx).Data(dao.Blog.Columns().IsTop, in.Top).Where(dao.Blog.Columns().Id, in.Id).Update()
+	return
+}
+
+func (s *sBlog) UpdateBlogRecommend(ctx context.Context, in *model.UpdateBlogRecommendInput) (err error) {
+	_, err = dao.Blog.Ctx(ctx).Data(dao.Blog.Columns().IsRecommend, in.Recommend).Where(dao.Blog.Columns().Id, in.Id).Update()
+	return
+}
+
+func (s *sBlog) UpdateBlogVisibility(ctx context.Context, in *model.UpdateBlogVisibilityInput) (err error) {
+	blogCls := dao.Blog.Columns()
+	_, err = dao.Blog.Ctx(ctx).Data(g.Map{
+		blogCls.IsAppreciation:   in.Appreciation,
+		blogCls.IsCommentEnabled: in.CommentEnabled,
+		blogCls.Password:         in.Password,
+		blogCls.IsPublished:      in.Published,
+		blogCls.IsRecommend:      in.Recommend,
+		blogCls.IsTop:            in.Top,
+	}).Where(dao.Blog.Columns().Id, in.Id).Update()
+	return
+}
+
+func (s *sBlog) DeleteBlog(ctx context.Context, BlogId int) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) (err error) {
+		// 删除文章
+		_, err = tx.Ctx(ctx).Delete(dao.Blog.Table(), g.Map{
+			dao.Blog.Columns().Id: BlogId,
+		})
+		// 删除评论
+		_, err = tx.Ctx(ctx).Delete(dao.Comment.Table(), g.Map{
+			dao.Comment.Columns().BlogId: BlogId,
+		})
+		return
 	})
 	return
 }

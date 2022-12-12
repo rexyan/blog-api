@@ -102,3 +102,40 @@ type UpdateBlogReq struct {
 }
 
 type UpdateBlogRes struct{}
+
+type BlogPlacedTopReq struct {
+	g.Meta        `path:"/blog/top" tags:"Blog" method:"put" summary:"文章置顶"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"文章ID"`
+	Top           bool   `json:"top" dc:"是否置顶"`
+}
+type BlogPlacedTopRes struct{}
+
+type BlogRecommendReq struct {
+	g.Meta        `path:"/blog/recommend" tags:"Blog" method:"put" summary:"文章推荐"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"文章ID"`
+	Recommend     bool   `json:"top" dc:"是否置顶"`
+}
+type BlogRecommendRes struct{}
+
+type BlogVisibilityReq struct {
+	g.Meta         `path:"/blog/{Id}/visibility" tags:"Blog" method:"put" summary:"文章可见性"`
+	Authorization  string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id             int    `json:"id" dc:"文章ID" in:"path"`
+	Appreciation   bool   `json:"appreciation" dc:"赞赏"`
+	CommentEnabled bool   `json:"commentEnabled" dc:"评论"`
+	Password       string `json:"password" dc:"私密密码"`
+	Published      bool   `json:"published" dc:"是否公开"`
+	Recommend      bool   `json:"recommend" dc:"推荐"`
+	Top            bool   `json:"top" dc:"置顶"`
+}
+type BlogVisibilityRes struct{}
+
+type DeleteBlogReq struct {
+	g.Meta        `path:"/blog" tags:"Blog" method:"delete" summary:"文章可见性"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"文章ID" in:"query"`
+}
+
+type DeleteBlogRes struct{}

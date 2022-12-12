@@ -94,3 +94,37 @@ func (c *cBlog) UpdateBlog(ctx context.Context, req *admin.UpdateBlogReq) (res *
 	})
 	return
 }
+
+func (c *cBlog) UpdateBlogTop(ctx context.Context, req *admin.BlogPlacedTopReq) (res *admin.BlogPlacedTopRes, err error) {
+	err = service.Blog().UpdateBlogTop(ctx, &model.UpdateBlogTopInput{
+		Id:  req.Id,
+		Top: req.Top,
+	})
+	return
+}
+
+func (c *cBlog) UpdateBlogRecommend(ctx context.Context, req *admin.BlogRecommendReq) (res *admin.BlogRecommendRes, err error) {
+	err = service.Blog().UpdateBlogRecommend(ctx, &model.UpdateBlogRecommendInput{
+		Id:        req.Id,
+		Recommend: req.Recommend,
+	})
+	return
+}
+
+func (c *cBlog) UpdateBlogVisibility(ctx context.Context, req *admin.BlogVisibilityReq) (res *admin.BlogVisibilityRes, err error) {
+	err = service.Blog().UpdateBlogVisibility(ctx, &model.UpdateBlogVisibilityInput{
+		Id:             req.Id,
+		Appreciation:   req.Appreciation,
+		CommentEnabled: req.CommentEnabled,
+		Password:       req.Password,
+		Published:      req.Published,
+		Recommend:      req.Recommend,
+		Top:            req.Top,
+	})
+	return
+}
+
+func (c *cBlog) DeleteBlog(ctx context.Context, req *admin.DeleteBlogReq) (res *admin.DeleteBlogRes, err error) {
+	err = service.Blog().DeleteBlog(ctx, req.Id)
+	return
+}

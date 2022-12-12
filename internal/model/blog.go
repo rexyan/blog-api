@@ -27,25 +27,25 @@ type CreateBlogInput struct {
 }
 
 type BlogListOutPutItems struct {
-	ID             int         `json:"id"`
-	Title          string      `json:"title"`
-	FirstPicture   string      `json:"firstPicture"`
-	Content        interface{} `json:"content"`
-	Description    interface{} `json:"description"`
-	Published      bool        `json:"published"`
-	Recommend      bool        `json:"recommend"`
-	Appreciation   bool        `json:"appreciation"`
-	CommentEnabled bool        `json:"commentEnabled"`
-	Top            bool        `json:"top"`
-	CreateTime     string      `json:"createTime"`
-	UpdateTime     string      `json:"updateTime"`
-	Views          interface{} `json:"views"`
-	Words          interface{} `json:"words"`
-	ReadTime       interface{} `json:"readTime"`
-	Password       string      `json:"password"`
-	User           interface{} `json:"user"`
-	CategoryId     int64       `json:"categoryId"`
-	Category       struct {
+	ID               int         `json:"id"`
+	Title            string      `json:"title"`
+	FirstPicture     string      `json:"firstPicture"`
+	Content          interface{} `json:"content"`
+	Description      interface{} `json:"description"`
+	IsPublished      bool        `json:"published"`
+	IsRecommend      bool        `json:"recommend"`
+	IsAppreciation   bool        `json:"appreciation"`
+	IsCommentEnabled bool        `json:"commentEnabled"`
+	IsTop            bool        `json:"top"`
+	CreateTime       string      `json:"createTime"`
+	UpdateTime       string      `json:"updateTime"`
+	Views            interface{} `json:"views"`
+	Words            interface{} `json:"words"`
+	ReadTime         interface{} `json:"readTime"`
+	Password         string      `json:"password"`
+	User             interface{} `json:"user"`
+	CategoryId       int64       `json:"categoryId"`
+	Category         struct {
 		ID           int           `json:"id"`
 		CategoryName string        `json:"name"`
 		Blogs        []interface{} `json:"blogs"`
@@ -82,4 +82,24 @@ type BlogDetailOutput struct {
 type UpdateBlogInput struct {
 	Id int // 文章Id
 	CreateBlogInput
+}
+
+type UpdateBlogTopInput struct {
+	Id  int // 文章Id
+	Top bool
+}
+
+type UpdateBlogRecommendInput struct {
+	Id        int // 文章Id
+	Recommend bool
+}
+
+type UpdateBlogVisibilityInput struct {
+	Id             int
+	Appreciation   bool
+	CommentEnabled bool
+	Password       string
+	Published      bool
+	Recommend      bool
+	Top            bool
 }
