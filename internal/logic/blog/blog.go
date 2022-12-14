@@ -125,9 +125,12 @@ func (s *sBlog) GetBlogs(ctx context.Context, title string, page model.PageInput
 		return nil, err
 	}
 	// 查询每个 blog 的 category 信息
+	//err = dao.Category.Ctx(ctx).
+	//	Where(dao.Category.Columns().Id, gdb.ListItemValuesUnique(res.List, "CategoryId")).
+	//	ScanList(&res.List, "Category")
 	err = dao.Category.Ctx(ctx).
 		Where(dao.Category.Columns().Id, gdb.ListItemValuesUnique(res.List, "CategoryId")).
-		ScanList(&res.List, "Category")
+		ScanList(&res.List, "Category", "id:CategoryId")
 	if err != nil {
 		return nil, err
 	}
