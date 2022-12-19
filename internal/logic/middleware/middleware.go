@@ -180,7 +180,7 @@ func (s *sMiddleware) CustomResponseHandler(r *ghttp.Request) {
 		JsonExit(r, code.Code(), err.Error())
 		r.Exit()
 	} else {
-		JsonExit(r, 200, "", res)
+		JsonExit(r, 200, "Success", res)
 	}
 }
 

@@ -254,3 +254,16 @@ func (s *sBlog) DeleteBlog(ctx context.Context, BlogId int) (err error) {
 	})
 	return
 }
+
+func (s *sBlog) GetBlogIdAndTitle(ctx context.Context) (res []entity.Blog, err error) {
+	blogs, err := dao.Blog.Ctx(ctx).Fields(dao.Blog.Columns().Title, dao.Blog.Columns().Title).All()
+	if err != nil {
+		return nil, err
+	}
+	
+	err = gconv.Scan(blogs, &res)
+	if err != nil {
+		return nil, err
+	}
+	return
+}

@@ -1,12 +1,33 @@
 package model
 
 type Series struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Value int    `json:"value"`
+	ID    int
+	Name  string
+	Value int
 }
 
 type DashboardTagOutput struct {
-	Legend []string `json:"legend"`
-	Series []Series `json:"series"`
+	Legend []string
+	Series []Series
+}
+
+type CreateTagInput struct {
+	Color   string
+	TagName string
+}
+
+type CreateTagOutput struct {
+}
+
+type GetTagListOutput struct {
+	CommonPageHelper
+	List []struct {
+		ID int
+		CreateTagInput
+	}
+}
+
+type UpdateTagInput struct {
+	ID int
+	CreateTagInput
 }

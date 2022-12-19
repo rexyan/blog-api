@@ -6,6 +6,7 @@ package service
 
 import (
 	"blog-api/internal/model"
+	"blog-api/internal/model/entity"
 	"context"
 )
 
@@ -22,6 +23,7 @@ type IBlog interface {
 	UpdateBlogRecommend(ctx context.Context, in *model.UpdateBlogRecommendInput) (err error)
 	UpdateBlogVisibility(ctx context.Context, in *model.UpdateBlogVisibilityInput) (err error)
 	DeleteBlog(ctx context.Context, BlogId int) (err error)
+	GetBlogIdAndTitle(ctx context.Context) (res []entity.Blog, err error)
 }
 
 var localBlog IBlog

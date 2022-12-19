@@ -143,3 +143,13 @@ type DeleteBlogReq struct {
 }
 
 type DeleteBlogRes struct{}
+
+type IdAndTitleReq struct {
+	g.Meta        `path:"/blogIdAndTitle" tags:"Blog" method:"get" summary:"ID 和 Title"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+}
+
+type IdAndTitleRes struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}

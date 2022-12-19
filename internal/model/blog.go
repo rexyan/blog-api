@@ -3,8 +3,8 @@ package model
 import "blog-api/internal/model/entity"
 
 type PageInput struct {
-	PageNum  int `json:"pageNum"`
-	PageSize int `json:"pageSize"`
+	PageNum  int
+	PageSize int
 }
 
 type CreateBlogInput struct {
@@ -27,60 +27,60 @@ type CreateBlogInput struct {
 }
 
 type BlogListOutPutItems struct {
-	ID               int         `json:"id"`
-	Title            string      `json:"title"`
-	FirstPicture     string      `json:"firstPicture"`
-	Content          interface{} `json:"content"`
-	Description      interface{} `json:"description"`
-	IsPublished      bool        `json:"published"`
-	IsRecommend      bool        `json:"recommend"`
-	IsAppreciation   bool        `json:"appreciation"`
-	IsCommentEnabled bool        `json:"commentEnabled"`
-	IsTop            bool        `json:"top"`
-	CreateTime       string      `json:"createTime"`
-	UpdateTime       string      `json:"updateTime"`
-	Views            interface{} `json:"views"`
-	Words            interface{} `json:"words"`
-	ReadTime         interface{} `json:"readTime"`
-	Password         string      `json:"password"`
-	User             interface{} `json:"user"`
-	CategoryId       int64       `json:"categoryId"`
+	ID               int
+	Title            string
+	FirstPicture     string
+	Content          interface{}
+	Description      interface{}
+	IsPublished      bool
+	IsRecommend      bool
+	IsAppreciation   bool
+	IsCommentEnabled bool
+	IsTop            bool
+	CreateTime       string
+	UpdateTime       string
+	Views            interface{}
+	Words            interface{}
+	ReadTime         interface{}
+	Password         string
+	User             interface{}
+	CategoryId       int64
 	Category         struct {
-		ID           int           `json:"id"`
-		CategoryName string        `json:"name"`
-		Blogs        []interface{} `json:"blogs"`
-	} `json:"category"`
-	Tags []interface{} `json:"tags"`
+		ID           int
+		CategoryName string
+		Blogs        []interface{}
+	}
+	Tags []interface{}
 }
 
 type CommonPageHelper struct {
-	Total             int   `json:"total"`
-	PageNum           int   `json:"pageNum"`
-	PageSize          int   `json:"pageSize"`
-	Size              int   `json:"size"`
-	StartRow          int   `json:"startRow"`
-	EndRow            int   `json:"endRow"`
-	Pages             int   `json:"pages"`
-	PrePage           int   `json:"prePage"`
-	NextPage          int   `json:"nextPage"`
-	IsFirstPage       bool  `json:"isFirstPage"`
-	IsLastPage        bool  `json:"isLastPage"`
-	HasPreviousPage   bool  `json:"hasPreviousPage"`
-	HasNextPage       bool  `json:"hasNextPage"`
-	NavigatePages     int   `json:"navigatePages"`
-	NavigatepageNums  []int `json:"navigatepageNums"`
-	NavigateFirstPage int   `json:"navigateFirstPage"`
-	NavigateLastPage  int   `json:"navigateLastPage"`
+	Total             int
+	PageNum           int
+	PageSize          int
+	Size              int
+	StartRow          int
+	EndRow            int
+	Pages             int
+	PrePage           int
+	NextPage          int
+	IsFirstPage       bool
+	IsLastPage        bool
+	HasPreviousPage   bool
+	HasNextPage       bool
+	NavigatePages     int
+	NavigatepageNums  []int
+	NavigateFirstPage int
+	NavigateLastPage  int
 }
 
 type BlogListOutput struct {
-	List []BlogListOutPutItems `json:"list"`
+	List []BlogListOutPutItems
 	CommonPageHelper
 }
 
 type BlogDetailOutput struct {
 	BlogListOutPutItems
-	Tags []entity.Tag `json:"tags"`
+	Tags []entity.Tag
 }
 
 type UpdateBlogInput struct {

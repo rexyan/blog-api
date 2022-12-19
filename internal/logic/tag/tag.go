@@ -6,6 +6,7 @@ import (
 	"blog-api/internal/model/entity"
 	"blog-api/internal/service"
 	"context"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -48,5 +49,52 @@ func (s *sTag) DashboardTagStatistics(ctx context.Context) (res *model.Dashboard
 			Value: gconv.Int(blogCount),
 		})
 	}
+	return
+}
+
+func (s *sTag) CreateTag(ctx context.Context, in *model.CreateTagInput) (err error) {
+	_, err = dao.Tag.Ctx(ctx).Data(g.Map{
+		dao.Tag.Columns().Color:   in.Color,
+		dao.Tag.Columns().TagName: in.TagName,
+	}).Insert()
+	return
+}
+
+func (s *sTag) GetTagPageList(ctx context.Context, page model.PageInput) (res *model.GetTagListOutput, err error) {
+	r := g.RequestFromCtx(ctx)
+	res = &model.GetTagListOutput{}
+	query := dao.Tag.Ctx(ctx)
+
+	result, err := query.Page(page.PageNum, page.PageSize).All()
+	if err != nil {
+		return &model.GetTagListOutput{}, err
+	}
+
+	// 总数
+	count, err := query.Count()
+	if err != nil {
+		return nil, err
+	}
+	// 页码信息
+	pageInfo := r.GetPage(gconv.Int(count), page.PageSize)
+	err = gconv.Scan(result, &res.List)
+	if err != nil {
+		return nil, err
+	}
+
+	service.Paginate().Paginate(&res.CommonPageHelper, count, page, result, pageInfo)
+	return
+}
+
+func (s *sTag) UpdateTag(ctx context.Context, in *model.UpdateTagInput) (err error) {
+	_, err = dao.Tag.Ctx(ctx).Data(g.Map{
+		dao.Tag.Columns().TagName: in.TagName,
+		dao.Tag.Columns().Color:   in.Color,
+	}).Where(dao.Tag.Columns().Id, in.ID).Update()
+	return
+}
+
+func (s *sTag) DeleteTag(ctx context.Context, TagId int) (err error) {
+	_, err = dao.Tag.Ctx(ctx).Where(dao.Tag.Columns().Id, TagId).Delete()
 	return
 }

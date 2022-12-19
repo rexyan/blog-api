@@ -13,7 +13,7 @@ type GetMomentListOutput struct {
 	List []struct {
 		ID int
 		CreateMomentInput
-	} `json:"list"`
+	}
 	CommonPageHelper
 }
 

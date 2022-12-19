@@ -128,3 +128,15 @@ func (c *cBlog) DeleteBlog(ctx context.Context, req *admin.DeleteBlogReq) (res *
 	err = service.Blog().DeleteBlog(ctx, req.Id)
 	return
 }
+
+func (c *cBlog) GetBlogIdAndTitle(ctx context.Context, req *admin.IdAndTitleReq) (res []*admin.IdAndTitleRes, err error) {
+	IdAndTitleList, err := service.Blog().GetBlogIdAndTitle(ctx)
+	if err != nil {
+		return nil, err
+	}
+	err = gconv.Scan(IdAndTitleList, &res)
+	if err != nil {
+		return nil, err
+	}
+	return
+}

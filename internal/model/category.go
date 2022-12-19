@@ -3,8 +3,8 @@ package model
 import "blog-api/internal/model/entity"
 
 type DashboardCategoryOutput struct {
-	Legend []string `json:"legend"`
-	Series []Series `json:"series"`
+	Legend []string
+	Series []Series
 }
 
 type GteCategoryListOutPut struct {
