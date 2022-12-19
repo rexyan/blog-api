@@ -10,6 +10,7 @@ import (
 	_ "blog-api/internal/logic/comment"
 	_ "blog-api/internal/logic/middleware"
 	_ "blog-api/internal/logic/moment"
+	_ "blog-api/internal/logic/paginate"
 	_ "blog-api/internal/logic/tag"
 	_ "blog-api/internal/logic/user"
 	_ "blog-api/internal/logic/visitor"
