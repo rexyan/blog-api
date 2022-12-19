@@ -62,3 +62,8 @@ func (c *cMoment) UpdateMomentPublished(ctx context.Context, req *admin.UpdateMo
 	err = service.Moment().UpdateMomentPublished(ctx, req.Id, req.Published)
 	return
 }
+
+func (c *cMoment) DeleteMoment(ctx context.Context, req *admin.DeleteMomentReq) (res *admin.DeleteMomentRes, err error) {
+	err = service.Moment().DeleteMoment(ctx, req.Id)
+	return
+}

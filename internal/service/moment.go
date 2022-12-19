@@ -14,7 +14,8 @@ type IMoment interface {
 	GetMomentList(ctx context.Context, page model.PageInput) (res *model.GetMomentListOutput, err error)
 	GetMomentDetail(ctx context.Context, MomentId int) (res *model.MomentDetailOutput, err error)
 	UpdateMoment(ctx context.Context, in *model.UpdateMomentInput) error
-	UpdateMomentPublished(ctx context.Context, MomentId int, IsPublished bool) error
+	UpdateMomentPublished(ctx context.Context, MomentId int, IsPublished bool) (err error)
+	DeleteMoment(ctx context.Context, MomentId int) (err error)
 }
 
 var localMoment IMoment

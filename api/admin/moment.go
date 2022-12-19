@@ -63,3 +63,12 @@ type UpdateMomentPublishedReq struct {
 
 type UpdateMomentPublishedRes struct {
 }
+
+type DeleteMomentReq struct {
+	g.Meta        `path:"/moment" tags:"Moment" method:"delete" summary:"删除动态"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"动态ID" in:"query"`
+}
+
+type DeleteMomentRes struct {
+}

@@ -6,6 +6,7 @@ import (
 	"blog-api/internal/model/entity"
 	"blog-api/internal/service"
 	"context"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -42,5 +43,46 @@ func (s *sCategory) DashboardCategoryStatistics(ctx context.Context) (res *model
 			Value: gconv.Int(blogCount),
 		})
 	}
+	return
+}
+
+func (s *sCategory) CreateCategory(ctx context.Context, CategoryName string) (err error) {
+	_, err = dao.Category.Ctx(ctx).Data(dao.Category.Columns().CategoryName, CategoryName).Insert()
+	return
+}
+
+func (s *sCategory) GetCategoryPageList(ctx context.Context, page model.PageInput) (res *model.GteCategoryListOutPut, err error) {
+	r := g.RequestFromCtx(ctx)
+	res = &model.GteCategoryListOutPut{}
+	query := dao.Category.Ctx(ctx)
+
+	result, err := query.Page(page.PageNum, page.PageSize).All()
+	if err != nil {
+		return &model.GteCategoryListOutPut{}, err
+	}
+
+	// 总数
+	count, err := query.Count()
+	if err != nil {
+		return nil, err
+	}
+	// 页码信息
+	pageInfo := r.GetPage(gconv.Int(count), page.PageSize)
+	err = gconv.Scan(result, &res.List)
+	if err != nil {
+		return nil, err
+	}
+
+	service.Paginate().Paginate(&res.CommonPageHelper, count, page, result, pageInfo)
+	return
+}
+
+func (s *sCategory) UpdateCategory(ctx context.Context, CategoryId int, CategoryName string) (err error) {
+	_, err = dao.Category.Ctx(ctx).Data(dao.Category.Columns().CategoryName, CategoryName).Where(dao.Category.Columns().Id, CategoryId).Update()
+	return
+}
+
+func (s *sCategory) DeleteCategory(ctx context.Context, CategoryId int) (err error) {
+	_, err = dao.Category.Ctx(ctx).Where(dao.Category.Columns().Id, CategoryId).Delete()
 	return
 }

@@ -81,10 +81,12 @@ func (s *sMoment) UpdateMoment(ctx context.Context, in *model.UpdateMomentInput)
 	return nil
 }
 
-func (s *sMoment) UpdateMomentPublished(ctx context.Context, MomentId int, IsPublished bool) error {
-	_, err := dao.Moment.Ctx(ctx).Where(dao.Moment.Columns().Id, MomentId).Data(dao.Moment.Columns().IsPublished, IsPublished).Update()
-	if err != nil {
-		return err
-	}
-	return nil
+func (s *sMoment) UpdateMomentPublished(ctx context.Context, MomentId int, IsPublished bool) (err error) {
+	_, err = dao.Moment.Ctx(ctx).Where(dao.Moment.Columns().Id, MomentId).Data(dao.Moment.Columns().IsPublished, IsPublished).Update()
+	return
+}
+
+func (s *sMoment) DeleteMoment(ctx context.Context, MomentId int) (err error) {
+	_, err = dao.Moment.Ctx(ctx).Where(dao.Moment.Columns().Id, MomentId).Delete()
+	return
 }
