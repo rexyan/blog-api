@@ -6,6 +6,8 @@ import (
 	"blog-api/internal/model/entity"
 	"blog-api/internal/service"
 	"context"
+	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -83,6 +85,15 @@ func (s *sCategory) UpdateCategory(ctx context.Context, CategoryId int, Category
 }
 
 func (s *sCategory) DeleteCategory(ctx context.Context, CategoryId int) (err error) {
-	_, err = dao.Category.Ctx(ctx).Where(dao.Category.Columns().Id, CategoryId).Delete()
-	return
+	// 查询 Category 是否被使用
+	count, err := dao.Blog.Ctx(ctx).Where(dao.Blog.Columns().CategoryId, CategoryId).Count()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		_, err = dao.Category.Ctx(ctx).Where(dao.Category.Columns().Id, CategoryId).Delete()
+		return
+	} else {
+		return gerror.NewCode(gcode.CodeOperationFailed, "分类正在被使用, 不能被删除！")
+	}
 }

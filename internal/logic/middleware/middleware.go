@@ -11,7 +11,6 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/util/gconv"
-	"net/http"
 	"time"
 )
 
@@ -138,33 +137,77 @@ func (s *sMiddleware) CustomResponseHandler(r *ghttp.Request) {
 		return
 	}
 
+	//var (
+	//	msg  = "success"
+	//	err  = r.GetError()
+	//	res  = r.GetHandlerResponse()
+	//	code = gerror.Code(err)
+	//)
+	//if err != nil {
+	//	if code == gcode.CodeNil {
+	//		code = gcode.CodeInternalError
+	//	}
+	//	msg = err.Error()
+	//} else if r.Response.Status > 0 && r.Response.Status != http.StatusOK {
+	//	msg = http.StatusText(r.Response.Status)
+	//	switch r.Response.Status {
+	//	case http.StatusNotFound:
+	//		code = gcode.CodeNotFound
+	//	case http.StatusForbidden:
+	//		code = gcode.CodeNotAuthorized
+	//	default:
+	//		code = gcode.CodeUnknown
+	//	}
+	//} else {
+	//	code = gcode.New(200, msg, "")
+	//}
+	//r.Response.WriteJson(CustomHandlerResponse{
+	//	Code: code.Code(),
+	//	Msg:  code.Message(),
+	//	Data: res,
+	//})
+
 	var (
-		msg  = "success"
-		err  = r.GetError()
-		res  = r.GetHandlerResponse()
-		code = gerror.Code(err)
+		err             = r.GetError()
+		res             = r.GetHandlerResponse()
+		code gcode.Code = gcode.CodeOK
 	)
 	if err != nil {
+		code = gerror.Code(err)
 		if code == gcode.CodeNil {
 			code = gcode.CodeInternalError
 		}
-		msg = err.Error()
-	} else if r.Response.Status > 0 && r.Response.Status != http.StatusOK {
-		msg = http.StatusText(r.Response.Status)
-		switch r.Response.Status {
-		case http.StatusNotFound:
-			code = gcode.CodeNotFound
-		case http.StatusForbidden:
-			code = gcode.CodeNotAuthorized
-		default:
-			code = gcode.CodeUnknown
-		}
+		JsonExit(r, code.Code(), err.Error())
+		r.Exit()
 	} else {
-		code = gcode.New(200, msg, "")
+		JsonExit(r, 200, "", res)
 	}
-	r.Response.WriteJson(CustomHandlerResponse{
-		Code: code.Code(),
-		Msg:  code.Message(),
-		Data: res,
+}
+
+// JsonRes 数据返回通用JSON数据结构
+type JsonRes struct {
+	Code    int         `json:"code"` // 默认200
+	Message string      `json:"msg"`  // 提示信息
+	Data    interface{} `json:"data"` // 返回数据(业务接口定义具体数据结构)
+}
+
+// Json 返回标准JSON数据。
+func Json(r *ghttp.Request, code int, message string, data ...interface{}) {
+	var responseData interface{}
+	if len(data) > 0 {
+		responseData = data[0]
+	} else {
+		responseData = g.Map{}
+	}
+	r.Response.WriteJson(JsonRes{
+		Code:    code,
+		Message: message,
+		Data:    responseData,
 	})
+}
+
+// JsonExit 返回标准JSON数据并退出当前HTTP执行函数。
+func JsonExit(r *ghttp.Request, code int, message string, data ...interface{}) {
+	Json(r, code, message, data...)
+	r.Exit()
 }
