@@ -61,3 +61,21 @@ type UpdateFriendInfoReq struct {
 
 type UpdateFriendInfoRes struct {
 }
+
+type CreateFriendReq struct {
+	g.Meta        `path:"/friend" tags:"友链" method:"post" summary:"添加友链"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Friend
+}
+
+type CreateFriendRes struct {
+}
+
+type UpdateCommentEnabledReq struct {
+	g.Meta         `path:"/friendInfo/commentEnabled" tags:"友链" method:"put" summary:"是否开启页面评论"`
+	Authorization  string `json:"Authorization" in:"header"  dc:"Authorization"`
+	CommentEnabled bool   `json:"commentEnabled"`
+}
+
+type UpdateCommentEnabledRes struct {
+}

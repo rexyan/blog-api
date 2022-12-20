@@ -15,3 +15,7 @@ type GetFriendListOutput struct {
 type UpdateFriendInput struct {
 	entity.Friend
 }
+
+type CreateFriendInput struct {
+	entity.Friend
+}

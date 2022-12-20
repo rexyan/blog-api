@@ -5,6 +5,7 @@
 package logic
 
 import (
+	_ "blog-api/internal/logic/about"
 	_ "blog-api/internal/logic/blog"
 	_ "blog-api/internal/logic/category"
 	_ "blog-api/internal/logic/comment"

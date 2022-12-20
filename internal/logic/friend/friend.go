@@ -6,6 +6,7 @@ import (
 	"blog-api/internal/service"
 	"context"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -25,21 +26,30 @@ func (s *sFriend) GetFriendInfo(ctx context.Context) (res *model.GetFriendInfoOu
 	friendContent, err := dao.SiteSetting.Ctx(ctx).
 		Fields(dao.SiteSetting.Columns().Value).
 		Where(dao.SiteSetting.Columns().NameEn, "friendContent").
-		One()
+		All()
+
 	if err != nil {
 		return nil, err
 	}
-	res.Content = gconv.String(friendContent)
+	if len(friendContent) > 0 {
+		res.Content = gconv.String(friendContent[0])
+	} else {
+		res.Content = ""
+	}
 
 	// 查询 friendCommentEnabled
 	friendCommentEnabled, err := dao.SiteSetting.Ctx(ctx).
 		Fields(dao.SiteSetting.Columns().Value).
 		Where(dao.SiteSetting.Columns().NameEn, "friendCommentEnabled").
-		One()
+		All()
 	if err != nil {
 		return nil, err
 	}
-	res.CommentEnabled = gconv.Bool(friendCommentEnabled)
+	if len(friendCommentEnabled) > 0 {
+		res.CommentEnabled = gconv.Bool(friendCommentEnabled[0]["value"])
+	} else {
+		res.CommentEnabled = false
+	}
 	return
 }
 
@@ -92,5 +102,24 @@ func (s *sFriend) UpdateFriend(ctx context.Context, in *model.UpdateFriendInput)
 		friendCls.Views:       in.Views,
 		friendCls.Website:     in.Website,
 	}).Where(friendCls.Id, in.Id).Update()
+	return
+}
+
+func (s *sFriend) CreateFriend(ctx context.Context, in *model.CreateFriendInput) (err error) {
+	friendCls := dao.Friend.Columns()
+	_, err = dao.Friend.Ctx(ctx).Data(g.Map{
+		friendCls.Avatar:      in.Avatar,
+		friendCls.Description: in.Description,
+		friendCls.Nickname:    in.Nickname,
+		friendCls.IsPublished: in.IsPublished,
+		friendCls.Website:     in.Website,
+		friendCls.Views:       0,
+		friendCls.CreateTime:  gtime.Now(),
+	}).Insert()
+	return
+}
+
+func (s *sFriend) UpdateCommentEnabled(ctx context.Context, CommentEnabled bool) (err error) {
+	_, err = dao.SiteSetting.Ctx(ctx).Data(dao.SiteSetting.Columns().Value, CommentEnabled).Where(dao.SiteSetting.Columns().NameEn, "friendCommentEnabled").Update()
 	return
 }

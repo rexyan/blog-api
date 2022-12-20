@@ -15,6 +15,8 @@ type IFriend interface {
 	GetFriendList(ctx context.Context, page model.PageInput) (res *model.GetFriendListOutput, err error)
 	UpdateFriendPublishStatus(ctx context.Context, FriendId int, PublishStatus bool) (err error)
 	UpdateFriend(ctx context.Context, in *model.UpdateFriendInput) (err error)
+	CreateFriend(ctx context.Context, in *model.CreateFriendInput) (err error)
+	UpdateCommentEnabled(ctx context.Context, CommentEnabled bool) (err error)
 }
 
 var localFriend IFriend

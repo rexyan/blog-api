@@ -66,3 +66,21 @@ func (c *cFriend) UpdateFriend(ctx context.Context, req *admin.UpdateFriendReq) 
 	})
 	return
 }
+
+func (c *cFriend) CreateFriend(ctx context.Context, req *admin.CreateFriendReq) (res *admin.CreateFriendRes, err error) {
+	err = service.Friend().CreateFriend(ctx, &model.CreateFriendInput{
+		Friend: entity.Friend{
+			Nickname:    req.Nickname,
+			Description: req.Description,
+			Website:     req.Website,
+			Avatar:      req.Avatar,
+			IsPublished: gconv.Int(req.IsPublished),
+		},
+	})
+	return
+}
+
+func (c *cFriend) UpdateCommentEnabled(ctx context.Context, req *admin.UpdateCommentEnabledReq) (res *admin.UpdateCommentEnabledRes, err error) {
+	err = service.Friend().UpdateCommentEnabled(ctx, req.CommentEnabled)
+	return
+}
