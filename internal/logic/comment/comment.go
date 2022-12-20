@@ -51,19 +51,28 @@ func (s *sComment) GetCommentList(ctx context.Context, page model.PageInput) (re
 	}
 	// 查找子评论
 	for i := 0; i < len(res.List); i++ {
-		if res.List[i].ParentCommentId < 0 {
-			res.List[i].ReplyComments = []model.CommentItem{}
-		} else {
-			//commentList := g.Slice{res.List[i]}
-			//for z := 0; z < len(commentList); z++ {
-			//	childComment := commentList[z]
-			//	childComment.ReplyComments =
-			//}
-		}
+		DepthComment(ctx, &res.List[i])
 	}
 
 	service.Paginate().Paginate(&res.CommonPageHelper, count, page, result, pageInfo)
 	return
+}
+
+func DepthComment(ctx context.Context, commentItem *model.CommentItem) {
+	replyComments := []model.CommentItem{}
+	// 查询该条评论的子评论
+	parentComments, _ := dao.Comment.Ctx(ctx).Where(dao.Comment.Columns().ParentCommentId, commentItem.ID).All()
+	if parentComments == nil {
+		commentItem.ReplyComments = replyComments
+	} else {
+		_ = gconv.Scan(parentComments, &replyComments)
+		commentItem.ReplyComments = replyComments
+		// 循环每个子评论
+		for i := 0; i < len(replyComments); i++ {
+			// 递归
+			DepthComment(ctx, &replyComments[i])
+		}
+	}
 }
 
 func (s *sComment) UpdateCommentNotice(ctx context.Context, CommentId int, NoticeStatus bool) (err error) {

@@ -20,7 +20,7 @@ func (c *cComment) GetCommentList(ctx context.Context, req *admin.GetCommentList
 	if err != nil {
 		return nil, err
 	}
-	err = gconv.Scan(commentList, &res)
+	err = gconv.Structs(commentList, &res)
 	return
 }
 
