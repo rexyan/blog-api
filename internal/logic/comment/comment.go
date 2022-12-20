@@ -28,10 +28,10 @@ func (s *sComment) GetCommentCount(ctx context.Context) (count int64) {
 	return
 }
 
-func (s *sComment) GetCommentList(ctx context.Context, page model.PageInput) (res *model.GetCommentListOutput, err error) {
+func (s *sComment) GetCommentTreeList(ctx context.Context, page model.PageInput) (res *model.GetCommentListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetCommentListOutput{}
-	query := dao.Comment.Ctx(ctx)
+	query := dao.Comment.Ctx(ctx).WhereLTE(dao.Comment.Columns().ParentCommentId, 0)
 
 	result, err := query.Page(page.PageNum, page.PageSize).All()
 	if err != nil {
@@ -82,5 +82,24 @@ func (s *sComment) UpdateCommentNotice(ctx context.Context, CommentId int, Notic
 
 func (s *sComment) UpdateCommentPublish(ctx context.Context, CommentId int, PublishStatus bool) (err error) {
 	_, err = dao.Comment.Ctx(ctx).Data(dao.Comment.Columns().IsPublished, PublishStatus).Where(dao.Comment.Columns().Id, CommentId).Update()
+	return
+}
+
+func (s *sComment) UpdateComment(ctx context.Context, in *model.CommentItem) (err error) {
+	commentCls := dao.Comment.Columns()
+	_, err = dao.Comment.Ctx(ctx).Data(g.Map{
+		commentCls.Avatar:   in.Avatar,
+		commentCls.Content:  in.Content,
+		commentCls.Email:    in.Email,
+		commentCls.Ip:       in.IP,
+		commentCls.Nickname: in.Nickname,
+		commentCls.Website:  in.Website,
+	}).Where(dao.Comment.Columns().Id, in.ID).Update()
+	return
+}
+
+func (s *sComment) DeleteComment(ctx context.Context, CommentId int) (err error) {
+	// 删除评论及子评论
+	_, err = dao.Comment.Ctx(ctx).WhereOr(dao.Comment.Columns().Id, CommentId).WhereOr(dao.Comment.Columns().ParentCommentId, CommentId).Delete()
 	return
 }

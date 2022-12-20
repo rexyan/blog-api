@@ -11,9 +11,11 @@ import (
 
 type IComment interface {
 	GetCommentCount(ctx context.Context) (count int64)
-	GetCommentList(ctx context.Context, page model.PageInput) (res *model.GetCommentListOutput, err error)
+	GetCommentTreeList(ctx context.Context, page model.PageInput) (res *model.GetCommentListOutput, err error)
 	UpdateCommentNotice(ctx context.Context, CommentId int, NoticeStatus bool) (err error)
 	UpdateCommentPublish(ctx context.Context, CommentId int, PublishStatus bool) (err error)
+	UpdateComment(ctx context.Context, in *model.CommentItem) (err error)
+	DeleteComment(ctx context.Context, CommentId int) (err error)
 }
 
 var localComment IComment

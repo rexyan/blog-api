@@ -51,3 +51,27 @@ type UpdateCommentPublishStatusReq struct {
 
 type UpdateCommentPublishStatusRes struct {
 }
+
+type UpdateCommentReq struct {
+	g.Meta        `path:"/comment" tags:"Comment" method:"put" summary:"更新评论"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	ID            int    `json:"id"`
+	Nickname      string `json:"nickname"`
+	Email         string `json:"email"`
+	Content       string `json:"content"`
+	Avatar        string `json:"avatar"`
+	IP            string `json:"ip"`
+	Website       string `json:"website"`
+}
+
+type UpdateCommentRes struct {
+}
+
+type DeleteCommentReq struct {
+	g.Meta        `path:"/comment" tags:"Moment" method:"delete" summary:"删除评论"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	Id            int    `json:"id" dc:"评论ID" in:"query"`
+}
+
+type DeleteCommentRes struct {
+}
