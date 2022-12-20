@@ -8,6 +8,7 @@ import (
 	_ "blog-api/internal/logic/blog"
 	_ "blog-api/internal/logic/category"
 	_ "blog-api/internal/logic/comment"
+	_ "blog-api/internal/logic/friend"
 	_ "blog-api/internal/logic/middleware"
 	_ "blog-api/internal/logic/moment"
 	_ "blog-api/internal/logic/paginate"
