@@ -61,3 +61,8 @@ func (c *cCronJob) DeleteJob(ctx context.Context, req *admin.DeleteJobReq) (res 
 	err = service.Job().DeleteJob(ctx, req.JobID)
 	return
 }
+
+func (c *cCronJob) DryRunJob(ctx context.Context, req *admin.DryRunJobReq) (res *admin.DryRunJobRes, err error) {
+	err = service.Job().DryRunJob(ctx, req.JobID)
+	return
+}

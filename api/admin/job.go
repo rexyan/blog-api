@@ -64,3 +64,12 @@ type DeleteJobReq struct {
 
 type DeleteJobRes struct {
 }
+
+type DryRunJobReq struct {
+	g.Meta        `path:"/job/run" tags:"定时任务" method:"post" summary:"触发定时任务"`
+	Authorization string `json:"Authorization" in:"header"  dc:"Authorization"`
+	JobID         int    `json:"jobId"`
+}
+
+type DryRunJobRes struct {
+}

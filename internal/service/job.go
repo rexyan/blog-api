@@ -15,6 +15,11 @@ type IJob interface {
 	UpdateJobStatus(ctx context.Context, JobId int, JobStatus bool) (err error)
 	UpdateJob(ctx context.Context, in *model.UpdateJobInput) (err error)
 	DeleteJob(ctx context.Context, JobId int) (err error)
+	DryRunJob(ctx context.Context, JobId int) (err error)
+	SyncBlogViewsToDatabase(ctx context.Context, JobId string, Param string) (err error)
+	SyncVisitInfoToDatabase(ctx context.Context, JobId string, Param string) (err error)
+	AddJobRecordLog(ctx context.Context, in *model.AddJobRecordLogInput) (err error)
+	InitCronJob(ctx context.Context) (err error)
 }
 
 var localJob IJob

@@ -14,3 +14,7 @@ type GetCronJobListOutput struct {
 type UpdateJobInput struct {
 	entity.ScheduleJob
 }
+
+type AddJobRecordLogInput struct {
+	entity.ScheduleJobLog
+}

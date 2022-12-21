@@ -12,6 +12,7 @@ server:
 logger:
   level : "all"
   stdout: true
+  stdoutColorDisabled: true
 
 # Database.
 database:

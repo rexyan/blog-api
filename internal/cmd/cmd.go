@@ -71,10 +71,18 @@ var (
 					group.Bind(admin.CronJob.UpdateJob)
 					group.Bind(admin.CronJob.DeleteJob)
 					group.Bind(admin.CronJob.CreateJob)
+					group.Bind(admin.CronJob.DryRunJob)
 					group.Bind(admin.CronJob.GetJobList)
 					group.Bind(admin.CronJob.UpdateJobStatus)
 				})
 			})
+			// 启动定时任务
+			err = service.Job().InitCronJob(ctx)
+			if err != nil {
+				g.Log().Error(ctx, "InitCronJob Error!", err.Error())
+				return err
+			}
+
 			s.Run()
 			return nil
 		},
