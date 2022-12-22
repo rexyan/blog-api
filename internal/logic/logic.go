@@ -11,6 +11,7 @@ import (
 	_ "blog-api/internal/logic/comment"
 	_ "blog-api/internal/logic/friend"
 	_ "blog-api/internal/logic/job"
+	_ "blog-api/internal/logic/log"
 	_ "blog-api/internal/logic/middleware"
 	_ "blog-api/internal/logic/moment"
 	_ "blog-api/internal/logic/paginate"
