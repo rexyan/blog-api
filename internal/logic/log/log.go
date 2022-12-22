@@ -23,7 +23,7 @@ func New() *sLog {
 func (s *sLog) GetJobLogList(ctx context.Context, page model.PageInput, startTime *gtime.Time, endTime *gtime.Time) (res *model.GetJobLogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetJobLogListOutput{}
-	query := dao.ScheduleJobLog.Ctx(ctx)
+	query := dao.ScheduleJobLog.Ctx(ctx).OrderDesc(dao.ScheduleJobLog.Columns().LogId)
 	// 按照时间过滤
 	if startTime != nil && endTime != nil {
 		query = query.WhereBetween(dao.ScheduleJobLog.Columns().CreateTime, startTime, endTime)
@@ -58,7 +58,7 @@ func (s *sLog) DeleteJobLog(ctx context.Context, LogId int) (err error) {
 func (s *sLog) GetLoginLogList(ctx context.Context, page model.PageInput, startTime *gtime.Time, endTime *gtime.Time) (res *model.GetLoginLogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetLoginLogListOutput{}
-	query := dao.LoginLog.Ctx(ctx)
+	query := dao.LoginLog.Ctx(ctx).OrderDesc(dao.LoginLog.Columns().Id)
 	// 按照时间过滤
 	if startTime != nil && endTime != nil {
 		query = query.WhereBetween(dao.LoginLog.Columns().CreateTime, startTime, endTime)
@@ -92,7 +92,7 @@ func (s *sLog) DeleteLoginLog(ctx context.Context, LogId int) (err error) {
 func (s *sLog) GetOperationLogList(ctx context.Context, page model.PageInput, startTime *gtime.Time, endTime *gtime.Time) (res *model.GetOperationLogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetOperationLogListOutput{}
-	query := dao.OperationLog.Ctx(ctx)
+	query := dao.OperationLog.Ctx(ctx).OrderDesc(dao.OperationLog.Columns().Id)
 	// 按照时间过滤
 	if startTime != nil && endTime != nil {
 		query = query.WhereBetween(dao.OperationLog.Columns().CreateTime, startTime, endTime)
@@ -126,7 +126,7 @@ func (s *sLog) DeleteOperationLog(ctx context.Context, LogId int) (err error) {
 func (s *sLog) GetExceptionLogList(ctx context.Context, page model.PageInput, startTime *gtime.Time, endTime *gtime.Time) (res *model.GetExceptionLogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetExceptionLogListOutput{}
-	query := dao.ExceptionLog.Ctx(ctx)
+	query := dao.ExceptionLog.Ctx(ctx).OrderDesc(dao.ExceptionLog.Columns().Id)
 	// 按照时间过滤
 	if startTime != nil && endTime != nil {
 		query = query.WhereBetween(dao.ExceptionLog.Columns().CreateTime, startTime, endTime)
@@ -160,7 +160,7 @@ func (s *sLog) DeleteExceptionLog(ctx context.Context, LogId int) (err error) {
 func (s *sLog) GetVisitLogList(ctx context.Context, page model.PageInput, startTime *gtime.Time, endTime *gtime.Time, VisitorId string) (res *model.GetVisitLogListOutput, err error) {
 	r := g.RequestFromCtx(ctx)
 	res = &model.GetVisitLogListOutput{}
-	query := dao.VisitLog.Ctx(ctx)
+	query := dao.VisitLog.Ctx(ctx).OrderDesc(dao.VisitLog.Columns().Id)
 	// 按照时间过滤
 	if startTime != nil && endTime != nil {
 		query = query.WhereBetween(dao.VisitLog.Columns().CreateTime, startTime, endTime)

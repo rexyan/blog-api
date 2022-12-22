@@ -5,6 +5,8 @@ import (
 	"blog-api/internal/model"
 	"blog-api/internal/service"
 	"context"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/util/gconv"
 	"time"
 )
 
@@ -53,5 +55,36 @@ func (s *sVisitor) GetLatestMonthPvUv(ctx context.Context) (res []*model.LatestM
 // GetCityVisitor 获取城市访问数据
 func (s *sVisitor) GetCityVisitor(ctx context.Context) (res []*model.CityVisitorOutput, err error) {
 	err = dao.CityVisitor.Ctx(ctx).Scan(&res)
+	return
+}
+
+func (s *sVisitor) GetVisitorList(ctx context.Context, page model.PageInput) (res *model.GetVisitListOutput, err error) {
+	r := g.RequestFromCtx(ctx)
+	res = &model.GetVisitListOutput{}
+	query := dao.Visitor.Ctx(ctx)
+
+	result, err := query.Page(page.PageNum, page.PageSize).All()
+	if err != nil {
+		return &model.GetVisitListOutput{}, err
+	}
+
+	// 总数
+	count, err := query.Count()
+	if err != nil {
+		return nil, err
+	}
+	// 页码信息
+	pageInfo := r.GetPage(gconv.Int(count), page.PageSize)
+	err = gconv.Scan(result, &res.List)
+	if err != nil {
+		return nil, err
+	}
+
+	service.Paginate().Paginate(&res.CommonPageHelper, count, page, result, pageInfo)
+	return
+}
+
+func (s *sVisitor) DeleteVisitor(ctx context.Context, VisitorId int) (err error) {
+	_, err = dao.Visitor.Ctx(ctx).Where(dao.Visitor.Columns().Id, VisitorId).Delete()
 	return
 }

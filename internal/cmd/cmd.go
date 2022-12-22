@@ -84,6 +84,8 @@ var (
 					group.Bind(admin.Log.DeleteExceptionLog)
 					group.Bind(admin.Log.GetVisitLogList)
 					group.Bind(admin.Log.DeleteVisitLog)
+					group.Bind(admin.Visitor.GetVisitorList)
+					group.Bind(admin.Visitor.DeleteVisitor)
 				})
 			})
 			// 启动定时任务

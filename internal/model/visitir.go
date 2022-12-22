@@ -1,5 +1,7 @@
 package model
 
+import "blog-api/internal/model/entity"
+
 type TodayPvUvOutput struct {
 	Pv int
 	Uv int
@@ -20,4 +22,9 @@ type DashBoardMonthPvUv struct {
 type CityVisitorOutput struct {
 	City string
 	Uv   int
+}
+
+type GetVisitListOutput struct {
+	CommonPageHelper
+	List []*entity.Visitor
 }
